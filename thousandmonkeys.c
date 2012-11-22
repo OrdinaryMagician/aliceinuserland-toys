@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-#include "helpers.h"
 
 char **words = NULL;
 unsigned int numwords = 0;

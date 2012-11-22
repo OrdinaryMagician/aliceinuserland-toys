@@ -3,7 +3,7 @@ LDFLAGS := -Wall -Wextra -O1
 PREFIX =? /usr/local
 .PHONY : clean install
 au: au-obj
-	$(CC) $(LDFLAGS) obj/helpers.o obj/thousandmonkeys.o -o bin/thousandmonkeys
+	$(CC) $(LDFLAGS) obj/thousandmonkeys.o -o bin/thousandmonkeys
 au-obj:
 	$(CC) $(CFLAGS) -c helpers.c -o obj/helpers.o
 	$(CC) $(CFLAGS) -c thousandmonkeys.c -o obj/thousandmonkeys.o
