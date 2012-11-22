@@ -57,7 +57,7 @@ int fillwords()
 	return 0;
 }
 
-int main ()
+int main()
 {
 	srand(time(NULL));
 	if ( fillwords() == 1 )
