@@ -61,13 +61,9 @@ int fillwords()
 int main ()
 {
 	srand(time(NULL));
-	unsigned int werd = 0;
 	if ( fillwords() == 1 )
 		return 1;
 	while ( true )
-	{
-		werd = rand()%numwords;
-		printf("%s ",words[werd]);
-	}
+		printf("%s ",words[rand()%numwords]);
 	return 0;
 }
