@@ -14,7 +14,6 @@ unsigned int numwords = 0;
 
 /*
    read dictionary and fill up the words array
-   code is quite ugly, sorry for the inconvenience
 */
 int fillwords()
 {
