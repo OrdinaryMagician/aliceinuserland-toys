@@ -6,7 +6,6 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <time.h>
 
 char **words = NULL;
@@ -15,7 +14,8 @@ unsigned int numwords = 0;
 /*
    read dictionary and fill up the words array
 */
-int fillwords()
+
+int fillwords( void )
 {
 	unsigned int i = 0, j = 0;
 	int ch = 0;
@@ -57,12 +57,12 @@ int fillwords()
 	return 0;
 }
 
-int main()
+int main( void )
 {
 	srand(time(NULL));
 	if ( fillwords() == 1 )
 		return 1;
-	while ( true )
+	while ( 1 )
 		printf("%s ",words[rand()%numwords]);
 	return 0;
 }
