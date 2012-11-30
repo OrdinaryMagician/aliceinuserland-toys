@@ -6,52 +6,89 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 char **words = NULL;
-unsigned int numwords = 0;
+unsigned long int numwords = 0;
+FILE *dict;
 
-/*
-   read dictionary and fill up the words array
-*/
+void setentry( unsigned long int idx, const char *word )
+{
+	if ( idx >= numwords )
+		return;
+	if ( word == NULL )
+		return;
+	if ( words[idx] != NULL )
+		free(words[idx]);
+	words[idx] = NULL;
+	words[idx] = malloc(strlen(word)+1);
+	strcpy(words[idx],word);
+}
+
+void increasedict( void )
+{
+	if ( words == NULL )
+	{
+		words = malloc(sizeof(char*));
+		words[0] = NULL;
+	}
+	else
+	{
+		words = realloc(words,sizeof(char*)*(numwords+1));
+		words[numwords] = NULL;
+	}
+}
+
+char* readline( void )
+{
+	unsigned long int i = 0;
+	int ch = 0;
+	char *line = NULL;
+	line = malloc(2);
+	while ( !feof(dict) )
+	{
+		ch = fgetc(dict);
+		if ( ch == '\n' )
+		{
+			line = realloc(line,i+2);
+			i++;
+			line[i] = '\0';
+			break;
+		}
+		if ( feof(dict) )
+			break;
+		line = realloc(line,i+2);
+		line[i] = ch;
+		i++;
+		line[i] = '\0';
+	}
+	return line;
+}
 
 int fillwords( void )
 {
-	unsigned int i = 0, j = 0;
-	int ch = 0;
-	FILE *dict;
+	unsigned long int i = 0;
+	char *gotword = NULL;
 	dict = fopen("/usr/share/dict/words","r");
 	if ( dict == NULL )
 	{
 		fprintf(stderr,"Error: Could not find /usr/share/dict/words\n");
 		return 1;
 	}
-	words = malloc(sizeof(char*));
 	while ( !feof(dict) )
 	{
+		increasedict();
+		gotword = readline();
+		if ( gotword == NULL )
+			break;
+		if ( strlen(gotword) <= 0 )
+			break;
 		numwords++;
-		words = realloc(words,sizeof(char*) * numwords);
-		words[i] = NULL;
-		words[i] = malloc(2);
-		j = 0;
-		while ( !feof(dict) )
-		{
-			ch = fgetc(dict);
-			if ( ch == '\n' )
-			{
-				words[i] = realloc(words[i],j+2);
-				j++;
-				words[i][j] = '\0';
-				i++;
-				break;
-			}
-			if ( feof(dict) )
-				break;
-			words[i][j] = ch;
-			words[i] = realloc(words[i],j+2);
-			j++;
-			words[i][j] = '\0';
-		}
+		setentry(i,gotword);
+		i++;
+		free(gotword);
+		gotword = NULL;
 	}
 	fclose(dict);
 	return 0;
