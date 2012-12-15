@@ -1,3 +1,8 @@
 This is a list of all the possible utils I can think of. I'll be filling it up every once in a while.
 
 thousandmonkeys - filler generator using an external dictionary (/usr/share/dict/words)
+beeper - a simple program to send tones to the pc speaker, can read sequences from stdin in the format <freq>,<duration>, each note separated by a newline
+bbox - a bouncing box screensaver
+stars - starfield screensaver
+rustle - a bland unfunny meme simulator, reads words ending in 'ed' and 'ies' from /usr/share/dict/words
+choose - let this pseudorandom program make decisions for you. Just separate choices with the word 'or'
