@@ -1,10 +1,9 @@
-CFLAGS := -std=c99 -Wall -Wextra -O2 -pipe
-LDFLAGS := -Wall -Wextra -O1
+CFLAGS := -std=c99 -Wall -Wextra -pedantic -O2 -pipe -Wno-unused-function -Wno-unused-parameter
 PREFIX ?= /usr/local
 .PHONY : clean install
 all: thousandmonkeys
 thousandmonkeys: thousandmonkeys-obj
-	$(CC) $(LDFLAGS) obj/thousandmonkeys.o -o bin/thousandmonkeys
+	$(CC) $(CFLAGS) obj/thousandmonkeys.o -o bin/thousandmonkeys
 thousandmonkeys-obj:
 	$(CC) $(CFLAGS) -c src/thousandmonkeys.c -o obj/thousandmonkeys.o
 helpers-obj:
