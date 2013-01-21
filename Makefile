@@ -1,18 +1,16 @@
-CFLAGS := -std=c99 -Wall -Wextra -pedantic -O2 -pipe -Wno-unused-function -Wno-unused-parameter
+CFLAGS := -std=c99 -Wall -Wextra -pedantic -O2 -pipe -Wno-unused-function -Wno-unused-parameter -Isrc/
 PREFIX ?= /usr/local
 .PHONY : clean install
-all: thousandmonkeys
-thousandmonkeys: thousandmonkeys-obj
-	$(CC) $(CFLAGS) obj/thousandmonkeys.o -o bin/thousandmonkeys
-thousandmonkeys-obj:
-	$(CC) $(CFLAGS) -c src/thousandmonkeys.c -o obj/thousandmonkeys.o
-helpers-obj:
-	$(CC) $(CFLAGS) -c src/helpers.c -o obj/helpers.o
+UTILS := thousandmonkeys
+SOURCES := $(patsubst %.c,%.o,$(wildcard src/*.c))
+all: $(SOURCES) $(UTILS)
+.c.o:
+	$(CC) $(CFLAGS) -c -o $@ $<
+thousandmonkeys:
+	$(CC) $(CFLAGS) src/thousandmonkeys.o -o bin/thousandmonkeys
 clean:
 	rm -f bin/*
-	rm -f obj/*
-install: install-thousandmonkeys
-install-thousandmonkeys: install-prepare
-	cp bin/thousandmonkeys "$(PREFIX)/bin/"
-install-prepare:
+	rm -f src/*.o
+install:
 	mkdir -p "$(PREFIX)/bin"
+	cp -r bin/ "$(PREFIX)/bin/"
