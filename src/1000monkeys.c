@@ -1,5 +1,5 @@
 /*
-	thousandmonkeys.c : a thousand monkeys typing
+	1000monkeys.c : a thousand monkeys typing
 	(C)2012-2013 Marisa Kirisame, UnSX Team.
 	Part of Au, the Alice in Userland project.
 	Released under the MIT License.
@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <helpers.h>
 
 char **words = NULL;
 unsigned long int numwords = 0;
@@ -21,7 +22,6 @@ void setentry( unsigned long int idx, const char *word )
 		return;
 	if ( words[idx] != NULL )
 		free(words[idx]);
-	words[idx] = NULL;
 	words[idx] = malloc(strlen(word)+1);
 	strcpy(words[idx],word);
 }
@@ -52,16 +52,14 @@ char* readline( void )
 		if ( ch == '\n' )
 		{
 			line = realloc(line,i+2);
-			i++;
-			line[i] = '\0';
+			line[++i] = '\0';
 			break;
 		}
 		if ( feof(dict) )
 			break;
 		line = realloc(line,i+2);
 		line[i] = ch;
-		i++;
-		line[i] = '\0';
+		line[++i] = '\0';
 	}
 	return line;
 }
@@ -72,10 +70,7 @@ int fillwords( void )
 	char *gotword = NULL;
 	dict = fopen("/usr/share/dict/words","r");
 	if ( dict == NULL )
-	{
-		fprintf(stderr,"Error: Could not find /usr/share/dict/words\n");
-		return 1;
-	}
+		return bail("Error: Could not find /usr/share/dict/words\n");
 	while ( !feof(dict) )
 	{
 		increasedict();
@@ -85,8 +80,7 @@ int fillwords( void )
 		if ( strlen(gotword) <= 0 )
 			break;
 		numwords++;
-		setentry(i,gotword);
-		i++;
+		setentry(i++,gotword);
 		free(gotword);
 		gotword = NULL;
 	}
@@ -97,10 +91,9 @@ int fillwords( void )
 int main( void )
 {
 	srand(time(NULL));
-	if ( fillwords() == 1 )
+	if ( fillwords() )
 		return 1;
-	while ( 1 )
-		printf("%s ",words[rand()%numwords]);
+	while ( printf("%s ",words[rand()%numwords]) > 0 );
 	return 0;
 }
 
