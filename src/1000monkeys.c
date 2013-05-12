@@ -93,7 +93,7 @@ int main( void )
 	srand(time(NULL));
 	if ( fillwords() )
 		return 1;
-	while ( printf("%s ",words[rand()%numwords]) > 0 );
+	while ( printf("%s ",words[rand()%numwords])>=0 );
 	return 0;
 }
 
